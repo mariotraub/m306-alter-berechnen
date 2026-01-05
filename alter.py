@@ -4,6 +4,7 @@ import sys
 
 
 DATE_FORMAT = "%d.%m.%Y"
+NOW = datetime.now()
 
 
 class DateDiff():
@@ -18,21 +19,25 @@ def read_input() -> list[str]:
 
 def validate_dates(input: list[str]) -> list[datetime]:
     try:
-        return [
-            datetime.strptime(date, DATE_FORMAT) for date in input
-        ]
+        dates: list[datetime] = []
+        for string in input:
+            date = datetime.strptime(string, DATE_FORMAT)
+            if date > NOW:
+               print("Mindestens ein eingegebenes Datum befindet sich in der Zukunft", file=sys.stderr)
+               exit(1)
+            dates.append(date)
+        return dates
     except ValueError:
-        print("Die eingegebenen Daten sind nicht valide.", file=sys.stderr)
+        print("Die eingegebenen Daten sind im falschen Format.", file=sys.stderr)
         exit(1)
 
 
 def get_diffs_to_now(dates: list[datetime]) -> list[DateDiff]:
-    now = datetime.now()
 
     return [
         DateDiff(
-            (now - date).days,
-            relativedelta(now, date)
+            (NOW - date).days,
+            relativedelta(NOW, date)
         ) for date in dates
     ]
 
