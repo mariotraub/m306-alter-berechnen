@@ -1,5 +1,5 @@
 from datetime import datetime
-# Dieses Packages hilft die Differenzen der Daten richtig zu berechnen
+# Dieses Package hilft die Differenzen der Daten richtig zu berechnen
 from dateutil.relativedelta import relativedelta
 import sys
 
