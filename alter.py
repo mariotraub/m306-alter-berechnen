@@ -1,4 +1,5 @@
 from datetime import datetime
+# Dieses Packages hilft die Differenzen der Daten richtig zu berechnen
 from dateutil.relativedelta import relativedelta
 import sys
 
@@ -22,19 +23,21 @@ def validate_dates(input: list[str]) -> list[datetime]:
         dates: list[datetime] = []
         for string in input:
             date = datetime.strptime(string, DATE_FORMAT)
+            # Überprüfen ob Datum in der Zukunft liegt
             if date > NOW:
                print("Mindestens ein eingegebenes Datum befindet sich in der Zukunft", file=sys.stderr)
                exit(1)
             dates.append(date)
         return dates
+    # Wenn dieser Error geworfen wird, ist das Datum im falschen Format
     except ValueError:
         print("Die eingegebenen Daten sind im falschen Format.", file=sys.stderr)
         exit(1)
 
 
 def get_diffs_to_now(dates: list[datetime]) -> list[DateDiff]:
-
     return [
+        # Alle nötigen Daten werden in einem DateDiff-Objekt gewrapped
         DateDiff(
             (NOW - date).days,
             relativedelta(NOW, date)
